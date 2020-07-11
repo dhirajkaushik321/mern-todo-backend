@@ -6,7 +6,7 @@ const Auth = require('../middleware/Auth')
 const router = express.Router()
 const upload=multer({
     limits:{
-        fileSize:1000000
+        fileSize:5000000
     },
     fileFilter(req,file,cb){
         if(file.originalname.endsWith('.jpg') || file.originalname.endsWith('.png') || file.originalname.endsWith('.jpeg')){
