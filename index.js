@@ -16,6 +16,7 @@ app.use((req,res,next) =>{
     throw err
 })
 app.use((error,req,res,next)=>{
+    console.log(error.message)
     if(res.headersSent){
         return next(error)
     }

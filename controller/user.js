@@ -21,7 +21,7 @@ const HttpError = require('../models/http-error')
     })
        const userData= await user.save()
        const token =jwt.sign({id:userData.id},config.get('secret'),{expiresIn:"1d"})
-        res.json({name,email,token})
+        res.json({name,id:userData._id,token})
     }catch(err){
         const error=new HttpError('Server error',500)
         return next(error)
@@ -39,10 +39,40 @@ const login =async (req,res,next)=>{
             return next(error)
         }
         const token =jwt.sign({id:identifiedUser.id},config.get('secret'),{expiresIn:"1d"})
-        res.json({name:identifiedUser.name,email:identifiedUser.email, token}) 
+        res.json({name:identifiedUser.name,id:identifiedUser._id, token}) 
     }catch(err){
         const error=new HttpError('Server error',500)
         return next(error)
     }   
 }
-module.exports={signup,login}
+
+//uploadProfile function
+const uploadProfile= async (req,res,next)=>{
+    try{
+    const user=await User.findById(req.id)
+    user.avatar=req.file.buffer
+    await user.save()
+    res.send("successful")
+    }
+    catch(err){
+        const error = new HttpError("Server error",500)
+        return next(err)
+    }
+}
+
+//Get Profile function
+const getProfile =async (req,res,next)=>{
+    try{
+    const user = await User.findById(req.params.id)
+    if(!user || !user.avatar){
+        const error = new HttpError('No avatar found',404)
+        return next(error)
+    }
+    res.set('Content-Type', 'image/jpg')
+    res.send(user.avatar)
+}catch(err){
+    const error = new HttpError('server error',500)
+    return next(error)
+}
+}
+module.exports={signup,login,uploadProfile,getProfile}
