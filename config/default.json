@@ -1,4 +1,0 @@
-{
-    "url":"mongodb+srv://myNotesBlast:myNotesBlast@cluster0-pkqkb.mongodb.net/MernStackTodo?authSource=admin&replicaSet=Cluster0-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
-    "secret":"supersecret"
-}
